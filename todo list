@@ -1,0 +1,112 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+// Task class representing a single task
+class Task {
+    private String description;
+    private boolean isCompleted;
+
+    public Task(String description) {
+        this.description = description;
+        this.isCompleted = false;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
+    public void markAsCompleted() {
+        isCompleted = true;
+    }
+}
+
+// ToDoList class representing a list of tasks
+class ToDoList {
+    private ArrayList<Task> tasks;
+
+    public ToDoList() {
+        tasks = new ArrayList<>();
+    }
+
+    public void addTask(String description) {
+        tasks.add(new Task(description));
+    }
+
+    public void deleteTask(int index) {
+        if (index >= 0 && index < tasks.size()) {
+            tasks.remove(index);
+        } else {
+            System.out.println("Invalid task index!");
+        }
+    }
+
+    public void markTaskAsCompleted(int index) {
+        if (index >= 0 && index < tasks.size()) {
+            Task task = tasks.get(index);
+            task.markAsCompleted();
+        } else {
+            System.out.println("Invalid task index!");
+        }
+    }
+
+    public void displayTasks() {
+        if (tasks.isEmpty()) {
+            System.out.println("No tasks in the to-do list.");
+        } else {
+            for (int i = 0; i < tasks.size(); i++) {
+                Task task = tasks.get(i);
+                System.out.println((i + 1) + ". " + task.getDescription() + " - " + (task.isCompleted() ? "Completed" : "Incomplete"));
+            }
+        }
+    }
+}
+
+// Main class to interact with users through console
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        ToDoList toDoList = new ToDoList();
+
+        while (true) {
+            System.out.println("\nChoose an option:");
+            System.out.println("1. Add a task");
+            System.out.println("2. Delete a task");
+            System.out.println("3. Mark a task as completed");
+            System.out.println("4. Display tasks");
+            System.out.println("5. Exit");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter task description: ");
+                    String description = scanner.nextLine();
+                    toDoList.addTask(description);
+                    break;
+                case 2:
+                    System.out.print("Enter task index to delete: ");
+                    int deleteIndex = scanner.nextInt() - 1;
+                    toDoList.deleteTask(deleteIndex);
+                    break;
+                case 3:
+                    System.out.print("Enter task index to mark as completed: ");
+                    int completeIndex = scanner.nextInt() - 1;
+                    toDoList.markTaskAsCompleted(completeIndex);
+                    break;
+                case 4:
+                    toDoList.displayTasks();
+                    break;
+                case 5:
+                    System.out.println("Exiting...");
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid choice! Please enter a number between 1 and 5.");
+            }
+        }
+    }
+}
